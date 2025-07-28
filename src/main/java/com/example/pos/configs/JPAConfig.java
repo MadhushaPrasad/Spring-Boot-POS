@@ -1,7 +1,6 @@
 package com.example.pos.configs;
 
 import javax.sql.DataSource;
-import com.example.pos.repository.CustomerRepository;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
