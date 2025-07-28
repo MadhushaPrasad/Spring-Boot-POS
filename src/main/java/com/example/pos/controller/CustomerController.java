@@ -6,6 +6,8 @@ import com.example.pos.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/customer")
 @CrossOrigin
@@ -15,8 +17,27 @@ public class CustomerController {
     CustomerService customerService;
 
     @GetMapping
-    public void getCustomer(@RequestBody CustomerDTO dto) {
-        Customer customer = new Customer(dto.getId(),dto.getName(),dto.getAddress(),dto.getSalary());
+    public List<Customer> getAllCustomer(){
+        return customerService.getAllCustomer();
+    }
+
+    @GetMapping("/{id}")
+    public Customer searchCustomer(@PathVariable String id) {
+        return customerService.searchCustomer(id);
+    }
+
+    @PostMapping()
+    public void saveCustomer(@RequestBody Customer customer){
         customerService.saveCustomer(customer);
+    }
+
+    @DeleteMapping(params = {"id"})
+    public void deleteCustomer(@RequestParam String id){
+        customerService.deleteCustomer(id);
+    }
+
+    @PutMapping
+    public void updateCustomer(@RequestBody Customer customer){
+        customerService.updateCustomer(customer);
     }
 }
