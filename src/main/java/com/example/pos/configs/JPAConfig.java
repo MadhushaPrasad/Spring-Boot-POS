@@ -1,6 +1,7 @@
 package com.example.pos.configs;
 
-import jakarta.persistence.Entity;
+import javax.sql.DataSource;
+import com.example.pos.repository.CustomerRepository;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +15,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.example.pos.repository")
 public class JPAConfig {
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean EntityManagerFactory(DataSource ds,JpaVendorAdapter va) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds, JpaVendorAdapter va) {
         LocalContainerEntityManagerFactoryBean lcem = new LocalContainerEntityManagerFactoryBean();
         lcem.setPackagesToScan("com.example.pos.entity");
         lcem.setDataSource(ds);
@@ -33,17 +33,17 @@ public class JPAConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setUrl("jdbc:mysql://localhost:3306/pos?createDatabaseIfNotExists=true");
+        ds.setUrl("jdbc:mysql://localhost:3306/pos?createDatabaseIfNotExist=true");
         ds.setUsername("root");
         ds.setPassword("");
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         return ds;
     }
 
     @Bean
-    public JpaVendorAdapter jpaVendorAdapter(){
+    public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter jpa = new HibernateJpaVendorAdapter();
-        jpa.setDatabasePlatform("org.hibernate.dialect.MySQL57Dialect");
+        jpa.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
         jpa.setDatabase(Database.MYSQL);
         jpa.setShowSql(true);
         jpa.setGenerateDdl(true);
@@ -51,7 +51,7 @@ public class JPAConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory managerFactory){
+    public PlatformTransactionManager transactionManager(EntityManagerFactory managerFactory) {
         return new JpaTransactionManager(managerFactory);
     }
 }
