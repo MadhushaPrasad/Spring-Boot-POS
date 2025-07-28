@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Spring_with_Maven</name>
     <description>Spring_with_Maven</description>
+    <packaging>war</packaging>
     <url/>
     <licenses>
         <license/>
@@ -40,11 +41,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>7.0.0-M7</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 
