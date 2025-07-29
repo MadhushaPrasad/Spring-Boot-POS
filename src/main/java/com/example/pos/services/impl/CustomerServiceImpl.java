@@ -1,8 +1,11 @@
 package com.example.pos.services.impl;
 
+import com.example.pos.dto.CustomerDTO;
 import com.example.pos.entity.Customer;
 import com.example.pos.repository.CustomerRepository;
 import com.example.pos.services.CustomerService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,33 +19,41 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
-     CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
-    public void saveCustomer(Customer customer) {
-        Customer savedCustomer = customerRepository.save(customer);
+    public void saveCustomer(CustomerDTO customer) {
+        Customer savedCustomer = modelMapper.map(customer, Customer.class);
+        customerRepository.save(savedCustomer);
     }
 
     @Override
-    public void updateCustomer(Customer customer) {
-        Customer updatedCustomer = customerRepository.save(customer);
+    public void updateCustomer(CustomerDTO customer) {
+        Customer updatedCustomer = modelMapper.map(customer, Customer.class);
+        customerRepository.save(updatedCustomer);
     }
 
     @Override
     public void deleteCustomer(String id) {
         Optional<Customer> searchedCustomer = customerRepository.findById(id);
-        customerRepository.delete(searchedCustomer.get() );
+        customerRepository.delete(searchedCustomer.get());
     }
 
     @Override
-    public Customer searchCustomer(String id) {
+    public CustomerDTO searchCustomer(String id) {
         Optional<Customer> searchedCustomer = customerRepository.findById(id);
+        CustomerDTO customer = modelMapper.map(searchedCustomer.get(), CustomerDTO.class);
 
-        return searchedCustomer.get();
+        return customer;
     }
 
     @Override
-    public List<Customer> getAllCustomer() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAllCustomer() {
+        List<Customer> allCustomers = customerRepository.findAll();
+        return modelMapper.map(allCustomers, new TypeToken<List<CustomerDTO>>() {
+        }.getType());
     }
 }

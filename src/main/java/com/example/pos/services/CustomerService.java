@@ -1,17 +1,17 @@
 package com.example.pos.services;
 
-import com.example.pos.entity.Customer;
+import com.example.pos.dto.CustomerDTO;
 
 import java.util.List;
 
 public interface CustomerService {
-    void saveCustomer(Customer customer);
+    void saveCustomer(CustomerDTO customer);
 
-    void updateCustomer(Customer customer);
+    void updateCustomer(CustomerDTO customer);
 
     void deleteCustomer(String id);
 
-    Customer searchCustomer(String id);
+    CustomerDTO searchCustomer(String id);
 
-    List<Customer> getAllCustomer();
+    List<CustomerDTO> getAllCustomer();
 }

@@ -1,7 +1,6 @@
 package com.example.pos.controller;
 
 import com.example.pos.dto.CustomerDTO;
-import com.example.pos.entity.Customer;
 import com.example.pos.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +16,17 @@ public class CustomerController {
     CustomerService customerService;
 
     @GetMapping
-    public List<Customer> getAllCustomer(){
+    public List<CustomerDTO> getAllCustomer(){
         return customerService.getAllCustomer();
     }
 
     @GetMapping("/{id}")
-    public Customer searchCustomer(@PathVariable String id) {
+    public CustomerDTO searchCustomer(@PathVariable String id) {
         return customerService.searchCustomer(id);
     }
 
     @PostMapping()
-    public void saveCustomer(@RequestBody Customer customer){
+    public void saveCustomer(@RequestBody CustomerDTO customer){
         customerService.saveCustomer(customer);
     }
 
@@ -37,7 +36,7 @@ public class CustomerController {
     }
 
     @PutMapping
-    public void updateCustomer(@RequestBody Customer customer){
+    public void updateCustomer(@RequestBody CustomerDTO customer){
         customerService.updateCustomer(customer);
     }
 }
