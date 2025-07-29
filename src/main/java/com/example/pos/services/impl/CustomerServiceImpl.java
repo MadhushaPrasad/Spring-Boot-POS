@@ -26,24 +26,36 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void saveCustomer(CustomerDTO customer) {
+        if (customerRepository.existsById(customer.getId())) {
+            throw new RuntimeException("Customer Already Exist");
+        }
         Customer savedCustomer = modelMapper.map(customer, Customer.class);
         customerRepository.save(savedCustomer);
     }
 
     @Override
     public void updateCustomer(CustomerDTO customer) {
+        if (!(customerRepository.existsById(customer.getId()))) {
+            throw new RuntimeException("Customer Not Exist");
+        }
         Customer updatedCustomer = modelMapper.map(customer, Customer.class);
         customerRepository.save(updatedCustomer);
     }
 
     @Override
     public void deleteCustomer(String id) {
+        if (!(customerRepository.existsById(id))) {
+            throw new RuntimeException("Customer Not Exist");
+        }
         Optional<Customer> searchedCustomer = customerRepository.findById(id);
         customerRepository.delete(searchedCustomer.get());
     }
 
     @Override
     public CustomerDTO searchCustomer(String id) {
+        if (!(customerRepository.existsById(id))) {
+            throw new RuntimeException("No Such Customer");
+        }
         Optional<Customer> searchedCustomer = customerRepository.findById(id);
         CustomerDTO customer = modelMapper.map(searchedCustomer.get(), CustomerDTO.class);
 
