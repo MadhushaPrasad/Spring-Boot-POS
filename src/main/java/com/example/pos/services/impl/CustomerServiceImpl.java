@@ -2,6 +2,7 @@ package com.example.pos.services.impl;
 
 import com.example.pos.dto.CustomerDTO;
 import com.example.pos.entity.Customer;
+import com.example.pos.handler.AppException;
 import com.example.pos.repository.CustomerRepository;
 import com.example.pos.services.CustomerService;
 import org.modelmapper.ModelMapper;
@@ -27,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void saveCustomer(CustomerDTO customer) {
         if (customerRepository.existsById(customer.getId())) {
-            throw new RuntimeException("Customer Already Exist");
+            throw new AppException("Customer Already Exist");
         }
         Customer savedCustomer = modelMapper.map(customer, Customer.class);
         customerRepository.save(savedCustomer);
@@ -36,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updateCustomer(CustomerDTO customer) {
         if (!(customerRepository.existsById(customer.getId()))) {
-            throw new RuntimeException("Customer Not Exist");
+            throw new AppException("Customer Not Exist");
         }
         Customer updatedCustomer = modelMapper.map(customer, Customer.class);
         customerRepository.save(updatedCustomer);
@@ -45,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(String id) {
         if (!(customerRepository.existsById(id))) {
-            throw new RuntimeException("Customer Not Exist");
+            throw new AppException("Customer Not Exist");
         }
         Optional<Customer> searchedCustomer = customerRepository.findById(id);
         customerRepository.delete(searchedCustomer.get());
@@ -54,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO searchCustomer(String id) {
         if (!(customerRepository.existsById(id))) {
-            throw new RuntimeException("No Such Customer");
+            throw new AppException("No Such Customer");
         }
         Optional<Customer> searchedCustomer = customerRepository.findById(id);
         CustomerDTO customer = modelMapper.map(searchedCustomer.get(), CustomerDTO.class);
